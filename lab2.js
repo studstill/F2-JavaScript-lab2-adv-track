@@ -111,7 +111,7 @@ var hello = {
 
 // I defined a constructor that creates objects to represent
 // sentient beings. They have a home planet, a language that they
-// speak, and method (that you'll place on the prototype) called
+// speak, and method (that I placed on the prototype) called
 // sayHello.
 
 function SentientBeing(homePlanet, language) {
@@ -121,16 +121,10 @@ function SentientBeing(homePlanet, language) {
 
 // sb is a SentientBeing object
 function sayHello(sb) {
-  // sayHello prints out (console.log's) hello in the
-  // language of the speaker, but returns it in the language
-  // of the listener (the sb parameter above).
-  // It usea the 'hello' object at the beginning of this exercise
-  // to do the translating
   console.log(hello[this.language]);
   return hello[sb.language];
 }
 
-// I put this on the SentientBeing prototype
 SentientBeing.prototype.sayHello = sayHello;
 
 // Created three subclasses of SentientBeing, one for each
@@ -143,11 +137,9 @@ Human.prototype = new SentientBeing('Earth', 'federation standard');
 function Romulan() {}
 Romulan.prototype = new SentientBeing('Romulus', 'romulan');
 
+// Human to Klingon
 assert((new Human()).sayHello(new Klingon()) === 'nuqneH',
   'the klingon should hear nuqneH');
-
-// I wrote five more assertions, to complete all the possible
-// greetings between the three types of sentient beings you created above.
 
 // Human to Romulan
 assert((new Human()).sayHello(new Romulan()) === 'Jolan\'tru',
@@ -179,8 +171,7 @@ assert((new Klingon()).sayHello(new Human()) === 'hello',
 
 function lastLetterSort(stringArray) {
   function byLastLetter(a, b) {
-    var aLast = a.charAt(a.length - 1);
-    var bLast = b.charAt(b.length - 1);
+    var aLast = a.charAt(a.length - 1), bLast = b.charAt(b.length - 1);
     return aLast < bLast ? aLast === bLast ? 0 : -1 : 1;
   }
   return stringArray.sort(byLastLetter);
@@ -196,9 +187,6 @@ function sumArray(numberArray) {
 
 function sumSort(arrayOfArrays) {
   arrayOfArrays.sort(function(a, b) {
-    //  I implemented this using sumArray to
-    //  order the arrays based on the sum of the numbers
-    //  inside each array
     return sumArray(a) - sumArray(b);
   });
   return arrayOfArrays;
