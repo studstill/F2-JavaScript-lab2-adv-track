@@ -19,8 +19,6 @@
 // We're going to use this special assert method again to
 // test our code
 function assert(expression, failureMessage) {
-  // var bool = expression;
-  // console.log(bool);
   if (!expression) {
     console.log('assertion failure: ', failureMessage);
   }
@@ -35,7 +33,6 @@ function assert(expression, failureMessage) {
  Pennsylvanians at a rate of 1/hour. However, each time it digested
  someone, it became faster and stronger: adding to its consumption
  rate by 1 person/hour.
-
     for the...      | starting rate of | persons consumed |
                     |  consumption     |    that hour     |
 --------------------|------------------|------------------|
@@ -43,80 +40,64 @@ function assert(expression, failureMessage) {
     second hour     |    2/hour        |        2         |
     third hour      |    3/hour        |        3         |
     fourth hour     |    4/hour        |        4         |
-
  TODO: First, make a constructor function, called Blob, that makes blobs.
-
- TODO: Next, create an instance of Blob named dowingtonBlob.
-
+ TODO: Next, create an instance of Blob named blob.
  TODO: Then, use a loop to calculate how long it took the blob to finish
  with Dowington.
 */
 
-function Blob(consumptionRate, townSize, name) {
-  this.rate = consumptionRate;
-  this.size = townSize;
-  this.name = name;
-  this.consumed = 0;
-  this.hour = 0;
+function Blob() {}
+
+var blob = new Blob();
+
+function eatDowington() {
+  var totalPop = 1000;
+  var rate = 1;
+
+  for (var i = 1; i < totalPop; i++) {
+    rate = i + 1;
+    totalPop = totalPop - rate;
+  }
+  return i;
 }
 
-Blob.prototype.consumeTown = function() {
-  while (this.consumed < this.size) {
-    console.log('At hour ' + this.hour + ' ' + this.name + ' had consumed ' + this.consumed + ' people.');
-    this.consumed += this.rate;
-    this.rate++;
-    this.hour++;
-  }
-  console.log('At hour ' + this.hour + ' ' + this.name + ' would have consumed the entire town.');
-};
+var hoursSpentInDowington = eatDowington();
 
-Blob.prototype.returnConsumeTown = function() {
-  return this.hour;
-};
-
-var dowingtonBlob = new Blob(1, 1000, 'Dowington Blob');
-dowingtonBlob.consumeTown();
-
-var hoursSpentInDowington = dowingtonBlob.returnConsumeTown(); // TODO: assign me the value of the
-                           // above calculation (how long it took
-                           // the blob to eat Dowington)
-console.log(hoursSpentInDowington);
+                          // TODO: assign me the value of the
+                          // above calculation (how long it took
+                          // the blob to eat Dowington)
 
 // Now, write a method that takes a population for an arbitrary
 // town, and the starting consumption rate, and returns the number
 // of hours the blob needs to ooze its way through that town.
 
-// TODO: implement me based on the instructions above.
-// Be sure to then assign me to the Blob's prototype.
+  // TODO: implement me based on the instructions above.
+  // Be sure to then assign me to the Blob's prototype.
+Blob.prototype.hoursToOoze = function hoursToOoze(population, peoplePerHour) {
+  for (var i = 1; i < population; i++) {
+    peoplePerHour = i + 1;
+    population = population - peoplePerHour;
+  }
+  if (population === 0) {
+    return 0;
+  } else {
+    return i;
+  }
+};
 
-//WHOOPSE! ALREADY DID THIS.  See 'Blob.prototype.consumeTown' above.
-
-var seattleBlob = new Blob(10000, 361010, 'Seattle Blob');
-seattleBlob.consumeTown();
-var vashonBlob = new Blob(100, 1000, 'Vashon Blob');
-vashonBlob.consumeTown();
-var testBlob = new Blob(1, 0, 'testBlob');
-testBlob.consumeTown();
-
-assert(testBlob.returnConsumeTown() === 0, 'no people means no time needed.');
-assert(dowingtonBlob.returnConsumeTown() === hoursSpentInDowington,
+assert(blob.hoursToOoze(0, 1) === 0, 'no people means no time needed.');
+assert(blob.hoursToOoze(1000, 1) === hoursSpentInDowington,
   'hoursSpentInDowington should match hoursToOoze\'s result for 1000');
 
 // TODO: write three more assertions like the two above, testing out
 // the hoursToOoze method.
-// I did this whole assignment a little differently.  Hope these suffice.
-
-assert(seattleBlob.returnConsumeTown() > 30, 'It took under 30 hours to consume Seattle.');
-
-//these two are meant to fail
-assert(vashonBlob.returnConsumeTown() > 20, 'It took under 20 hours to consume Vashon');
-assert(vashonBlob.returnConsumeTown() > dowingtonBlob.returnConsumeTown(), 'Dowington took longer to be consumed than Vashon');
+assert(blob.hoursToOoze(10, 1) === 4, 'population of 10 starting with rate of 1 eaten per hour equals 4 hours');
+assert(blob.hoursToOoze(50, 1) !== 4, 'population of 50 starting with rate of 1 eaten per hour does not equal 4 hours');
+assert(blob.hoursToOoze(500, 1) > 4, 'population of 500 starting with rate of 1 eaten per hour is greater than 4 hours');
 
 //*********************************************************
 // PROBLEM 2: Universal Translator. 20 points
 //*********************************************************
-
-console.log('*** problem 2 ***');
 
 var hello = {
   klingon: 'nuqneH',  // home planet is Qo'noS
@@ -124,28 +105,55 @@ var hello = {
   'federation standard': 'hello' // home planet is Earth
 };
 
-function SentientBeing(planet, language, hello) {
-  this.planet = planet;
+// TODO: define a constructor that creates objects to represent
+// sentient beings. They have a home planet, a language that they
+// speak, and method (that you'll place on the prototype) called
+// sayHello.
+
+// TODO: specify a home planet and a language
+// you'll need to add parameters to this constructor
+function SentientBeing(homePlanet, language) {
+  this.homePlanet = homePlanet;
   this.language = language;
-  this.hello = hello;
+  this.greeting = hello[this.language];
 }
 
+// sb is a SentientBeing object
 SentientBeing.prototype.sayHello = function(sb) {
-  console.log(this.hello);
-  // console.log(hello[sb]);
-  return hello[sb];
+  return sb.greeting;
 };
 
-var Klingon = new SentientBeing('Qo\'noS', 'klingon', hello.klingon);
-var Romulan = new SentientBeing('Romulus', 'romulan', hello.romulan);
-var Human = new SentientBeing('Earth', 'federation standard', hello['federation standard']);
+    // TODO: say hello prints out (console.log's) hello in the
+    // language of the speaker, but returns it in the language
+    // of the listener (the sb parameter above).
+    // use the 'hello' object at the beginning of this exercise
+    // to do the translating
 
-assert(Klingon.sayHello('romulan') === 'Jolan\'tru', 'the klingon should say Jolan\'tru');
-assert(Klingon.sayHello('federation standard') === 'hello', 'the klingon should say hello');
-assert(Romulan.sayHello('klingon') === 'nuqneH', 'the romulan should say nuqneH');
-assert(Romulan.sayHello('federation standard') === 'hello', 'the romulan should say hello');
-assert(Human.sayHello('klingon') === 'nuqneH', 'the human should say nuqneH');
-assert(Human.sayHello('romulan') === 'Jolan\'tru', 'the human should say Jolan\'tru');
+    //TODO: put this on the SentientBeing prototype
+
+// TODO: create three subclasses of SentientBeing, one for each
+// species above (Klingon, Human, Romulan).
+function Klingon() {}
+Klingon.prototype = new SentientBeing('Qo\'nos', 'klingon');
+
+function Human() {}
+Human.prototype = new SentientBeing('Earth', 'federation standard');
+
+function Romulan() {}
+Romulan.prototype = new SentientBeing('Romulus', 'romulan');
+
+assert((new Human()).sayHello(new Klingon()) === 'nuqneH',
+  'the klingon should hear nuqneH');
+
+assert((new Human()).sayHello(new Romulan()) === 'Jolan\'tru', 'the romulan should hear Jolantru');
+assert((new Klingon()).sayHello(new Human()) === 'hello', 'the human should hear hello');
+assert((new Klingon()).sayHello(new Romulan()) === 'Jolan\'tru', 'the romulan should hear Jolantru');
+assert((new Romulan()).sayHello(new Human()) === 'hello', 'the human should hear hello');
+assert((new Romulan()).sayHello(new Klingon()) === 'nuqneH',
+  'the klingon should hear nuqneH');
+
+// TODO: write five more assertions, to complete all the possible
+// greetings between the three types of sentient beings you created above.
 
 //*********************************************************
 // PROBLEM 3: Sorting. 20 points.
@@ -155,81 +163,52 @@ assert(Human.sayHello('romulan') === 'Jolan\'tru', 'the human should say Jolan\'
 // will test your code)
 //*********************************************************
 
-console.log('*** problem 3a ***');
-
-var strArray = ['aazaaa', 'rac', 'ab', 'aalaaayaaaf', 'ad', 'tad'];
-
-function getLastLetter(array) {
-  var lastLetArray = [];
-  for (var i = 0; i < array.length; i++) {
-    lastLetArray.push(array[i].slice(-1));
-  }
-  return lastLetArray;
-}
-
-function compareLastLetter(stringArray) {
-  var mySortArray = getLastLetter(stringArray);
-  function sortByComparison() {
-    for (var i = 0; i < mySortArray.length; i++) {
-      if (mySortArray[i] < mySortArray[i + 1]) {
-        return -1;
-      } else if (mySortArray[i] > mySortArray[i + 1]) {
-        return 1;
-      } else if (mySortArray[i] === mySortArray[i + 1]) {
-        return 0;
-      }
+function lastLetterSort(stringArray) {
+  function byLastLetter(a, b) {
+    //TODO: implement me. sort the strings in alphabetical
+    // order using their last letter
+    // Read this about how the sort function works:
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+    // this byLastLetter function is a "compare function"
+    // And check out the "comparing strings" section  here:
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
+    if (a.charAt(a.length - 1) > b.charAt(b.length - 1)) {
+      return 1;
+    } else {
+      return -1;
     }
   }
-  mySortArray.sort(sortByComparison());
-  // console.log(mySortArray);
-  return mySortArray;
+  return stringArray.sort(byLastLetter);
 }
-
-compareLastLetter(strArray);
-
-assert(compareLastLetter(strArray) === ['a', 'b', 'c', 'd', 'd', 'f'], 'the arrays should match');
-console.log('I can\'t seem to get this assertino to work.  Whenever I log the value outside the function, it converts to the string "a,b,c,d,d,f" but inside the function it logs as the array of string values.  Messed with it but can\'t get the assertion to pass');
-
-console.log('*** problem 3b ***');
-
-var numArray = [3, 4, 5, 6, 7, 8];
-var numArray2 = [8, 9, 10, 11, 12, 13];
-var numArray3 = [88, 89, 90];
-var numArray4 = [1, 2, 3];
+assert(lastLetterSort(['Lenora', 'Noelle', 'Holden', 'Coralie']).value === ['Noelle', 'Lenora', 'Holden', 'Coralie'].value, 'alphabatize order by last letter');
 
 function sumArray(numberArray) {
   var sum = 0;
-  numberArray.forEach(function(entry) {
-    sum += entry;
+  // TODO: implement me using forEach
+  numberArray.forEach(function(number) {
+    sum += number;
   });
-  // console.log(sum);
   return sum;
 }
 
-sumArray(numArray);
-sumArray(numArray2);
-sumArray(numArray3);
-sumArray(numArray4);
-
-assert(sumArray(numArray) === 33, 'the sum of the array should be 33');
-assert(sumArray(numArray4) === 6, 'the sum of the array should be 6');
-
-console.log('*** problem 3c ***');
-
-var group = [numArray, numArray2, numArray3, numArray4];
+assert(sumArray([1, 9, 4, 6]) === 20, 'the sum of the array is 20');
+assert(sumArray([40, 10, 35, 15]) === 100, 'the sum of the array is 100');
 
 function sumSort(arrayOfArrays) {
-  arrayOfArrays.sort(function(a, b) {
-    return sumArray(a) - sumArray(b);
+  return arrayOfArrays.sort(function(a, b) {
+    // TODO: implement me using sumArray
+    //  order the arrays based on the sum of the numbers
+    //  inside each array
+    if (sumArray(a) > sumArray(b)) {
+      return 1;
+    } else {
+      return -1;
+    }
   });
-  // console.log(arrayOfArrays);
-  return arrayOfArrays;
 }
 
-sumSort(group);
-assert(sumSort(group) === '[ [ 1, 2, 3 ],\n[ 3, 4, 5, 6, 7, 8 ],\n[ 8, 9, 10, 11, 12, 13 ],\n[ 88, 89, 90 ] ]', 'the array did not reorder correctly');
-console.log('again, mystified why this assertion doesn\'t work.  tried it a whole bunch of different ways.');
-
+assert(sumSort([[40, 10, 35, 15], [1, 9, 4, 6]]).value === [[1, 9, 4, 6], [40, 10, 35, 15]].value, 'sorts arrays based on sum of numbers inside each array');
+assert(sumSort([[5, 10, 15], [2, 8], [1, 9, 90]]).value === [[2, 8], [5, 10, 15], [1, 9, 90]].value, 'sorts arrays based on sum of numbers inside each array');
 //*********************************************************
 // PROBLEM 4: Cleanup: 10 points
 // Makes sure this file passes jshint and jscs
